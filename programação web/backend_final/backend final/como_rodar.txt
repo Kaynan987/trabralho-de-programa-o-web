@@ -1,0 +1,244 @@
+VISÃO GERAL
+
+Você está criando uma API completa em Node.js + Express + MongoDB, capaz de:
+
+riar posts
+azer upload de imagens
+tualizar e excluir posts
+ervir imagens direto no navegador
+alar com o banco MongoDB Atlas (na nuvem)
+
+ — PROGRAMAS QUE PRECISA TER INSTALADOS
+ 1. Node.js
+
+É o motor que executa o JavaScript fora do navegador.
+ Baixe aqui: https://nodejs.org/
+
+Baixe a versão LTS (Long Term Support)
+
+Depois de instalar, abra o Prompt de Comando (cmd) e digite:
+
+node -v
+
+
+Se aparecer algo como v18.x.x ou v20.x.x, está tudo certo 
+
+ 2. MongoDB Atlas (banco na nuvem)
+
+Você precisa de uma conta gratuita.
+
+Acesse: https://www.mongodb.com/atlas
+
+Crie uma conta grátis
+
+Crie um cluster gratuito (pode ser o plano "Free Tier")
+
+Depois que o cluster estiver pronto:
+
+Clique em “Connect” → “Connect your application”
+
+Copie a string de conexão que parece com isso:
+
+mongodb+srv://usuario:senha@cluster0.mongodb.net
+
+
+Substitua usuario e senha pelos seus dados e cole no seu .env
+
+ 3. VS Code (editor de código)
+ 
+ https://code.visualstudio.com/
+
+É onde você vai editar o projeto, abrir o terminal e rodar os comandos.
+
+— CRIAR A PASTA DO PROJETO
+
+Crie uma pasta onde quiser, por exemplo:
+
+C:\Users\Kaynan\Desktop\api-instavale
+
+
+Depois, abra essa pasta no VS Code.
+
+ — INICIALIZAR O PROJETO
+
+No terminal do VS Code (Ctrl + `), digite:
+
+npm init -y
+
+
+Isso cria o arquivo package.json com as configurações básicas do seu projeto.
+
+ — INSTALAR TODAS AS DEPENDÊNCIAS
+
+Rode os comandos abaixo (um por um ou tudo junto):
+
+npm install express mongodb dotenv cors multer express-form-data
+
+
+ Explicação rápida:
+
+Pacote	Função
+express	Cria o servidor web
+mongodb	Conecta ao banco de dados MongoDB
+dotenv	Lê variáveis de ambiente do arquivo .env
+cors	Permite que o frontend acesse a API
+multer	Faz upload de imagens
+express-form-data	Ajuda a lidar com formulários com arquivos
+ — CRIAR A ESTRUTURA DE PASTAS
+
+Monte seu projeto assim:
+
+📁 api-instavale/
+│
+├── 📄 server.js
+├── 📄 .env
+│
+└── 📁 src/
+    ├── 📁 config/
+    │   └── dbConfig.js
+    │
+    ├── 📁 models/
+    │   └── postModel.js
+    │
+    ├── 📁 controllers/
+    │   └── postController.js
+    │
+    └── 📁 routes/
+        └── postRoutes.js
+│
+└── 📁 uploads/   ← criada automaticamente ao subir imagens
+
+
+ Dica: Se a pasta uploads não existir, crie ela vazia — é onde as imagens vão ficar.
+
+ — CRIAR O ARQUIVO .env
+
+Na raiz do projeto, crie um arquivo chamado .env com o seguinte conteúdo:
+
+STRING_CONEXAO="mongodb+srv://usuario:senha@cluster0.mongodb.net"
+PORT=3000
+
+
+ Substitua usuario e senha pelos dados do seu cluster MongoDB Atlas.
+Não use aspas simples (‘ ’) — use aspas duplas (“ ”) ou nenhuma.
+
+ — RODAR O SERVIDOR
+
+No terminal, execute:
+
+node server.js
+
+
+Se quiser que o servidor reinicie automaticamente sempre que editar algo:
+
+npm install -g nodemon
+nodemon server.js
+
+ — VERIFICAR SE ESTÁ FUNCIONANDO
+
+Se tudo estiver certo, o terminal mostrará algo assim:
+
+Conectando ao cluster do banco de dados...
+Conectado ao MongoDB Atlas com sucesso!
+Servidor rodando em http://localhost:3000 🚀
+
+ — TESTAR NO NAVEGADOR OU POSTMAN
+
+Agora é hora de ver funcionando!
+Abra o navegador e vá para:
+
+ Ver todos os posts
+
+ http://localhost:3000/posts
+
+Se o banco estiver vazio, vai aparecer [] (um array vazio).
+
+ Criar post (sem imagem)
+
+Use o Postman
+ ou o Insomnia
+
+Escolha o método POST
+
+Use a URL:
+
+http://localhost:3000/post
+
+
+Vá em Body → Raw → JSON
+
+Cole:
+
+{
+  "descricao": "Meu primeiro post!"
+}
+
+
+Clique em Send
+
+Se der certo, vai aparecer algo como:
+
+{
+  "acknowledged": true,
+  "insertedId": "6549b0..."
+}
+
+ Enviar imagem com descrição
+
+Mude o método para POST
+
+URL:
+
+http://localhost:3000/upload
+
+
+Vá em Body → form-data
+
+Adicione:
+
+Key: image → Type: File → selecione uma imagem .png
+
+Key: descricao → Type: Text → coloque uma descrição
+
+Clique em Send
+
+🔗 Agora você pode abrir no navegador:
+
+http://localhost:3000/NOME_DA_IMAGEM.png
+
+ Atualizar um post
+PUT http://localhost:3000/post/<id_do_post>
+Body (JSON):
+{
+  "descricao": "Texto atualizado!"
+}
+
+ Deletar um post
+DELETE http://localhost:3000/post/<id_do_post>
+
+ — DICAS FINAIS
+
+Se der erro de conexão → confira o link no .env
+
+Se o upload não funcionar → crie manualmente a pasta /uploads
+
+Se quiser parar o servidor → aperte Ctrl + C no terminal
+
+Para limpar o console → cls (no Windows)
+
+ TESTE FINAL
+
+Abra no navegador:
+
+http://localhost:3000/posts
+
+
+ Se aparecer algo (mesmo que []), tudo está funcionando!
+
+Se quiser, posso montar um frontend simples em HTML + JavaScript para:
+
+listar os posts com imagens,
+
+enviar novos posts,
+
+e deletar com um clique,
